@@ -7,14 +7,14 @@ using ll = long long;
 int iterations_for_n(ll n)
 {
     if (n <= 1000)
-        return 1; // 1000
+        return 1000; // 1000
     if (n <= 10000)
-        return 1; // 150
+        return 150; // 150
     if (n <= 100000)
-        return 1; // 100
+        return 100; // 100
     if (n <= 1000000)
-        return 5; // 50
-    return 1;     // 30
+        return 50; // 50
+    return 10;     // 30
 }
 
 /* ---------------- CHUNG–LU GRAPH ---------------- */
@@ -118,51 +118,56 @@ Result run_push_pull(const vector<vector<int>> &adj, double eps = 0.05)
 /* ---------------- MAIN EXPERIMENT ---------------- */
 int main()
 {
-    int n=100;
-  auto adj = generate_chung_lu_graph(n);
-  vector<int> visited(n, 0);
-  int count=0;
-  for(int i=0; i<n; i++){
-    if(visited[i]==0){
-        visited[i]=1;
-        count++;
-        queue<int> qu;
-        qu.push(i);
-        while(!qu.empty()){
-            int node=qu.front();
-            qu.pop();
-            for(int j=0; j<adj[node].size(); j++){
-                int new_node=adj[node][j];
-                if(visited[new_node]==0){
-                    visited[new_node]=1;
-                    qu.push(new_node);
+    int n = 100;
+    auto adj = generate_chung_lu_graph(n);
+    vector<int> visited(n, 0);
+    int count = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (visited[i] == 0)
+        {
+            visited[i] = 1;
+            count++;
+            queue<int> qu;
+            qu.push(i);
+            while (!qu.empty())
+            {
+                int node = qu.front();
+                qu.pop();
+                for (int j = 0; j < adj[node].size(); j++)
+                {
+                    int new_node = adj[node][j];
+                    if (visited[new_node] == 0)
+                    {
+                        visited[new_node] = 1;
+                        qu.push(new_node);
+                    }
                 }
             }
         }
     }
-  } 
-    cout<<count;
- /*  ofstream file("F:\\push_pull_results1.csv");
-    file << "n,iterations,avg_rounds\n";
+    cout << count;
+    /*  ofstream file("F:\\push_pull_results1.csv");
+       file << "n,iterations,avg_rounds\n";
 
-    for (ll n = 100; n <= 1000000000; n = ll(n * 1.5))
-    {
-        int iters = iterations_for_n(n);
-        double sum_rounds = 0;
+       for (ll n = 100; n <= 1000000000; n = ll(n * 1.5))
+       {
+           int iters = iterations_for_n(n);
+           double sum_rounds = 0;
 
-        cout << "Running n = " << n << " (" << iters << " iterations)\n";
+           cout << "Running n = " << n << " (" << iters << " iterations)\n";
 
-        for (int it = 0; it < iters; it++)
-        {
-            auto adj = generate_chung_lu_graph(n);
-            Result r = run_push_pull(adj);
-            sum_rounds += r.rounds;
-        }
+           for (int it = 0; it < iters; it++)
+           {
+               auto adj = generate_chung_lu_graph(n);
+               Result r = run_push_pull(adj);
+               sum_rounds += r.rounds;
+           }
 
-        file << n << "," << iters << "," << sum_rounds / iters << "\n";
-    }
+           file << n << "," << iters << "," << sum_rounds / iters << "\n";
+       }
 
-    file.close();
-    cout << "\nResults saved to push_pull_results.csv\n";*/
+       file.close();
+       cout << "\nResults saved to push_pull_results.csv\n";*/
     return 0;
 }
